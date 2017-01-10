@@ -10,6 +10,8 @@ namespace TextAdventure
 	{
 		Location currentLocation;
 
+        Exit.Directions direction;
+
 		public bool isRunning = true;
 
 		private List<Item> inventory;
@@ -22,21 +24,27 @@ namespace TextAdventure
 
 			// build the "map"
 			Location l1 = new Location("Entrance to shaft \nDepth: 100m", "You stand at the top of a large missile silo. There is a small building to the \nright of your location.");
-			Item rock = new Item();
-			l1.addItem(rock);
 
-			Location l2 = new Location("End of hall", "You have reached the end of a long dark hallway. You can\nsee nowhere to go but back.");
-			Item window = new Item();
-			l2.addItem(window);
+			Location l2 = new Location("Cabin exterior \nDepth: 100m", "You see a cabin, long since abandoned.");
+			Item cabinDoor = new Item();
+			l2.addItem(cabinDoor);
 
-			Location l3 = new Location("Small study", "This is a small and cluttered study, containing a desk covered with\npapers. Though they no doubt are of some importance,\nyou cannot read their writing");
+			Location l3 = new Location("Cabin interior \nDepth: 100m", "The cabin contains what looks like the scene of a murder; a corpse lies battered and bruised, with half his head missing. His backpack lies discarded next to him.");
+            Item employeesBackpack = new Item();
+            Item climbingGear = new Item();
+            Item noticeOfTermination = new Item();
+            Item accessCard1 = new Item(); 
+            l3.addItem(employeesBackpack);
+            l3.addItem(climbingGear);
+            l3.addItem(noticeOfTermination);
+            l3.addItem(accessCard1);
 
-			l1.addExit(new Exit(Exit.Directions.Forward, l2));
-			l1.addExit(new Exit(Exit.Directions.Right, l3));
+			//l1.addExit(new Exit(Exit.Directions.Forward, l2));
+			l1.addExit(new Exit(Exit.Directions.Right, l2));
 
-			l2.addExit(new Exit(Exit.Directions.Backward, l1));
+			l2.addExit(new Exit(Exit.Directions.In, l3));
 
-			l3.addExit(new Exit(Exit.Directions.Left, l1));
+			l3.addExit(new Exit(Exit.Directions.Out, l2));
 
 			currentLocation = l1;
 			showLocation();
@@ -70,7 +78,12 @@ namespace TextAdventure
         // TODO: Implement the input handling algorithm.
 		public void doAction(string command)
 		{
-			Console.WriteLine("\nInvalid command, are you confused?\n");
+            if (command == "help")
+                Help();
+            if (command == "inventory")
+                showInventory();
+            else
+                Console.WriteLine("\nInvalid command. (enter 'help' to display possible actions.)\n");
 		}
 
 		private void showInventory()
@@ -106,5 +119,50 @@ namespace TextAdventure
 			// otherwise, process commands.
 			doAction(currentCommand);
 		}
+
+        public void GoToNewLocation()
+        {
+            switch (direction)
+            {
+                case Exit.Directions.Forward:
+                    break;
+                case Exit.Directions.Backward:
+                    break;
+                case Exit.Directions.Left:
+                    break;
+                case Exit.Directions.Right: 
+                    break;
+                case Exit.Directions.Up:
+                    break;
+                case Exit.Directions.Down:
+                    break;
+                case Exit.Directions.In:
+                    break;
+                case Exit.Directions.Out:
+                    break;
+            }
+        }
+
+        public void Help()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("In this location, you can move: ");
+            foreach (Exit exit in currentLocation.getExits())
+            {
+                Console.WriteLine(exit.getDirection());
+            }
+            Console.WriteLine("");
+            if (currentLocation.getInventory().Count > 0)
+            {
+                Console.WriteLine("\nThis location contains the following:\n");
+                for (int i = 0; i < currentLocation.getInventory().Count; i++)
+                {
+                    Console.WriteLine(currentLocation.getInventory()[i].ToString());
+                }
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Type 'inventory' to look at your inventory");
+            Console.WriteLine("Type 'use', then the name of the item to use it");
+        }
 	}
 }

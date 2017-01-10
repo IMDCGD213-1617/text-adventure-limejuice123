@@ -11,7 +11,7 @@ namespace TextAdventure
 	
 		public Item()
 		{
-
+  
 		}
 	}
 }
