@@ -20,7 +20,9 @@ namespace TextAdventure
 		{
 			inventory = new List<Item>();
 
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("You are a MOSSAD agent. You are tasked with retrieving the U-238 tamper from a \nprototype Soviet missile, to aid in Israel's nuclear program.");
+            Console.ResetColor();
 
 			// build the "map"
 			Location l1 = new Location("Entrance to shaft \nDepth: 100m", "You stand at the top of a large missile silo. There is a small building to the \nright of your location.");
@@ -39,12 +41,19 @@ namespace TextAdventure
             l3.addItem(noticeOfTermination);
             l3.addItem(accessCard1);
 
+            Location l4 = new Location("Old elevator shaft \nDepth: 100m", "You see an old elevator, likely used for descending the shaft. It has very thick, widely spaced bars, and a large control box");
+
+
 			//l1.addExit(new Exit(Exit.Directions.Forward, l2));
 			l1.addExit(new Exit(Exit.Directions.Right, l2));
+            l1.addExit(new Exit(Exit.Directions.Forward, l4));
 
 			l2.addExit(new Exit(Exit.Directions.In, l3));
+            l2.addExit(new Exit(Exit.Directions.Left, l1));
 
 			l3.addExit(new Exit(Exit.Directions.Out, l2));
+
+            l4.addExit(new Exit(Exit.Directions.Backward, l1));
 
 			currentLocation = l1;
 			showLocation();
@@ -52,10 +61,13 @@ namespace TextAdventure
 
 		public void showLocation()
 		{
-			Console.WriteLine("\n" + currentLocation.getTitle() + "\n");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\n" + currentLocation.getTitle() + "\n");
 			Console.WriteLine(currentLocation.getDescription());
+            Console.ResetColor();
 
-			if (currentLocation.getInventory().Count > 0)
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            if (currentLocation.getInventory().Count > 0)
 			{
 				Console.WriteLine("\nThis location contains the following:\n");
 
@@ -64,8 +76,10 @@ namespace TextAdventure
 					Console.WriteLine(currentLocation.getInventory()[i].ToString());
 				}
 			}
-	
-			Console.WriteLine("\nAvailable Exits: \n");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\nAvailable Exits: \n");
 
 			foreach (Exit exit in currentLocation.getExits() )
 			{
@@ -73,6 +87,7 @@ namespace TextAdventure
 			}
 
 			Console.WriteLine();
+            Console.ResetColor();
 		}
 
         // TODO: Implement the input handling algorithm.
@@ -82,13 +97,16 @@ namespace TextAdventure
                 Help();
             if (command == "inventory")
                 showInventory();
+            if (command == "examine")
+                Examine();
             else
                 Console.WriteLine("\nInvalid command. (enter 'help' to display possible actions.)\n");
 		}
 
 		private void showInventory()
 		{
-			if ( inventory.Count > 0 )
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            if ( inventory.Count > 0 )
 			{
 				Console.WriteLine("\nA quick look in your bag reveals the following:\n");
 
@@ -103,6 +121,7 @@ namespace TextAdventure
 			}
 
 			Console.WriteLine("");
+            Console.ResetColor();
 		}
 
 		public void Update()
@@ -120,31 +139,18 @@ namespace TextAdventure
 			doAction(currentCommand);
 		}
 
-        public void GoToNewLocation()
+       /* public void Forward()
         {
-            switch (direction)
-            {
-                case Exit.Directions.Forward:
-                    break;
-                case Exit.Directions.Backward:
-                    break;
-                case Exit.Directions.Left:
-                    break;
-                case Exit.Directions.Right: 
-                    break;
-                case Exit.Directions.Up:
-                    break;
-                case Exit.Directions.Down:
-                    break;
-                case Exit.Directions.In:
-                    break;
-                case Exit.Directions.Out:
-                    break;
-            }
-        }
+            Location location = new Location();
+
+            List<Exit> exits = location.getExits();
+
+            if (exits.Contains<)
+        } */
 
         public void Help()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("");
             Console.WriteLine("In this location, you can move: ");
             foreach (Exit exit in currentLocation.getExits())
@@ -162,7 +168,30 @@ namespace TextAdventure
             }
             Console.WriteLine("");
             Console.WriteLine("Type 'inventory' to look at your inventory");
+            Console.WriteLine("Type 'examine' to observe the area for details");
             Console.WriteLine("Type 'use', then the name of the item to use it");
+            Console.ResetColor();
         }
-	}
+    
+        public void Examine()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            switch (currentLocation.ToString())
+            {
+                case "l2":
+                    Console.WriteLine("This looks like a bug-out cabin of sorts. A place where someone might hide for a while");
+                    break;
+                case "l3":
+                    Console.WriteLine("The man's jacket appears to have some papers in the pockets");
+                    break;
+                case "l4":
+                    Console.WriteLine("The bars seem sturdy enough to support a human's weight.");
+                    break;
+                default:
+                    Console.WriteLine("There is nothing particularly of interest in this area");
+                    break;
+            }
+            Console.ResetColor();
+        }
+    }
 }

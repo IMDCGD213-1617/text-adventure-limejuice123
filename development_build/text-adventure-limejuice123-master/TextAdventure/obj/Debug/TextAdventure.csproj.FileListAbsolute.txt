@@ -19,3 +19,10 @@ C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\development_bu
 C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\development_build\text-adventure-limejuice123-master\TextAdventure\bin\Debug\TextAdventure.exe
 C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\development_build\text-adventure-limejuice123-master\TextAdventure\bin\Debug\TextAdventure.pdb
 C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\development_build\text-adventure-limejuice123-master\TextAdventure\obj\Debug\TextAdventure.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\bin\Debug\TextAdventure.exe.config
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\bin\Debug\TextAdventure.XML
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\obj\Debug\TextAdventure.exe
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\obj\Debug\TextAdventure.pdb
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\bin\Debug\TextAdventure.exe
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\bin\Debug\TextAdventure.pdb
+C:\Users\Administrator\Desktop\development_build\text-adventure-limejuice123-master\TextAdventure\obj\Debug\TextAdventure.csprojResolveAssemblyReference.cache
