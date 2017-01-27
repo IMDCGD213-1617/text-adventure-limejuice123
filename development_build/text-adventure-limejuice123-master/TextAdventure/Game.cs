@@ -9,8 +9,10 @@ namespace TextAdventure
 	class Game
 	{
 		Location currentLocation;
+        public Location l1, l2, l3, l4, l5, l6, l7, l8;
+        public static string locationCurrent;
 
-        Exit.Directions direction;
+        //Exit.Directions direction;
 
 		public bool isRunning = true;
 
@@ -25,13 +27,11 @@ namespace TextAdventure
             Console.ResetColor();
 
 			// build the "map"
-			Location l1 = new Location("Entrance to shaft \nDepth: 100m", "You stand at the top of a large missile silo. There is a small building to the \nright of your location.");
+			l1 = new Location("Entrance to shaft \nDepth: 100m", "You stand at the top of a large missile silo. There is a small building to the \nright of your location.");
 
-			Location l2 = new Location("Cabin exterior \nDepth: 100m", "You see a cabin, long since abandoned.");
-			Item cabinDoor = new Item();
-			l2.addItem(cabinDoor);
+			l2 = new Location("Cabin exterior \nDepth: 100m", "You see a cabin, long since abandoned.");
 
-			Location l3 = new Location("Cabin interior \nDepth: 100m", "The cabin contains what looks like the scene of a murder; a corpse lies battered and bruised, with half his head missing. His backpack lies discarded next to him.");
+			l3 = new Location("Cabin interior \nDepth: 100m", "The cabin contains what looks like the scene of a murder; a corpse lies battered and bruised, with half his head missing. His backpack lies discarded next to him.");
             Item employeesBackpack = new Item();
             Item climbingGear = new Item();
             Item noticeOfTermination = new Item();
@@ -41,7 +41,7 @@ namespace TextAdventure
             l3.addItem(noticeOfTermination);
             l3.addItem(accessCard1);
 
-            Location l4 = new Location("Old elevator shaft \nDepth: 100m", "You see an old elevator, likely used for descending the shaft. It has very thick, widely spaced bars, and a large control box");
+            l4 = new Location("Old elevator shaft \nDepth: 100m", "You see an old elevator, likely used for descending the shaft. It has very thick, widely spaced bars, and a large control box");
 
 
 			//l1.addExit(new Exit(Exit.Directions.Forward, l2));
@@ -56,6 +56,7 @@ namespace TextAdventure
             l4.addExit(new Exit(Exit.Directions.Backward, l1));
 
 			currentLocation = l1;
+            locationCurrent = "l1";
 			showLocation();
 		}
 
@@ -99,8 +100,18 @@ namespace TextAdventure
                 showInventory();
             if (command == "examine")
                 Examine();
-            else
-                Console.WriteLine("\nInvalid command. (enter 'help' to display possible actions.)\n");
+            if (command == "forward" || command == "Forward" || command == "walk forward" || command == "go forward")
+                Forward();
+            if (command == "backward")
+                Backward();
+            if (command == "right")
+                Right();
+            if (command == "left")
+                Left();
+            if (command == "in")
+                In();
+            if (command == "out")
+                Out();
 		}
 
 		private void showInventory()
@@ -139,14 +150,95 @@ namespace TextAdventure
 			doAction(currentCommand);
 		}
 
-       /* public void Forward()
+        public void Forward()
         {
-            Location location = new Location();
+            switch (locationCurrent)
+            {
+                default:
+                    Console.WriteLine("You can't go that way!");
+                    break;
+                case "l1":
+                    currentLocation = l4;
+                    locationCurrent = "l4";
+                    showLocation();
+                    break;
+            }
+        }
+        
+        public void Backward()
+        {
+            switch (locationCurrent)
+            {
+                default:
+                    Console.WriteLine("You can't go that way!");
+                    break;
+                case "l4":
+                    currentLocation = l1;
+                    locationCurrent = "l1";
+                    showLocation();
+                    break;
+            }
+        } 
 
-            List<Exit> exits = location.getExits();
+        public void Right()
+        {
+            switch (locationCurrent)
+            {
+                default:
+                    Console.WriteLine("You can't go that way!");
+                    break;
+                case "l1":
+                    currentLocation = l2;
+                    locationCurrent = "l2";
+                    showLocation();
+                    break;
+            }
+        }
 
-            if (exits.Contains<)
-        } */
+        public void Left()
+        {
+            switch (locationCurrent)
+            {
+                default:
+                    Console.WriteLine("You can't go that way!");
+                    break;
+                case "l2":
+                    currentLocation = l1;
+                    locationCurrent = "l1";
+                    showLocation();
+                    break;
+            }
+        }
+
+        public void In()
+        {
+            switch (locationCurrent)
+            {
+                default:
+                    Console.WriteLine("You can't go that way!");
+                    break;
+                case "l2":
+                    currentLocation = l3;
+                    locationCurrent = "l3";
+                    showLocation();
+                    break;
+            }
+        }
+
+        public void Out()
+        {
+            switch (locationCurrent)
+            {
+                default:
+                    Console.WriteLine("You can't go that way!");
+                    break;
+                case "l3":
+                    currentLocation = l2;
+                    locationCurrent = "l2";
+                    showLocation();
+                    break;
+            }
+        }
 
         public void Help()
         {
@@ -176,7 +268,7 @@ namespace TextAdventure
         public void Examine()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            switch (currentLocation.ToString())
+            switch (locationCurrent)
             {
                 case "l2":
                     Console.WriteLine("This looks like a bug-out cabin of sorts. A place where someone might hide for a while");
