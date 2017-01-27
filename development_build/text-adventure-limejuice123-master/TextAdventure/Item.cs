@@ -8,14 +8,19 @@ namespace TextAdventure
 {    
 	class Item
 	{
-        public string[] itemName;
-        public string usedWith;
-        public string location = Game.locationCurrent;
+        public string itemName;
+        //public string usedWith;
+        //public string location = Game.locationCurrent;
 
         public Item()
 		{
            
 		}
+
+        public Item (string name)
+        {
+            itemName = name;
+        }
 
         /*public void ItemAssign()
         {

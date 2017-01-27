@@ -32,10 +32,10 @@ namespace TextAdventure
 			l2 = new Location("Cabin exterior \nDepth: 100m", "You see a cabin, long since abandoned.");
 
 			l3 = new Location("Cabin interior \nDepth: 100m", "The cabin contains what looks like the scene of a murder; a corpse lies battered and bruised, with half his head missing. His backpack lies discarded next to him.");
-            Item employeesBackpack = new Item();
-            Item climbingGear = new Item();
-            Item noticeOfTermination = new Item();
-            Item accessCard1 = new Item(); 
+            Item employeesBackpack = new Item("Employee's Backpack");
+            Item climbingGear = new Item("Climbing Gear");
+            Item noticeOfTermination = new Item("Notice of Termination");
+            Item accessCard1 = new Item("Access Card: Level 1"); 
             l3.addItem(employeesBackpack);
             l3.addItem(climbingGear);
             l3.addItem(noticeOfTermination);
@@ -114,7 +114,18 @@ namespace TextAdventure
                 Out();
 		}
 
-		private void showInventory()
+        /*private void Inventory()
+        {
+            string a;
+            do
+                Console.WriteLine("What do you want to take");
+            while (inventory == null)
+            {
+                currentLocation.getInventory();
+            }
+        } */
+
+        private void showInventory()
 		{
             Console.ForegroundColor = ConsoleColor.Yellow;
             if ( inventory.Count > 0 )
