@@ -80,7 +80,7 @@ namespace TextAdventure
 			}
 		}
 
-		public Item takeItem(string name)
+		/* public Item takeItem(string name)
 		{
 			foreach ( Item _item in inventory )
 			{
@@ -93,7 +93,12 @@ namespace TextAdventure
 			}
 
 			return null;
-		}
+		} */
+
+        public void TakeItem()
+        {
+
+        }
 
 		public string getTitle()
 		{

@@ -74,7 +74,7 @@ namespace TextAdventure
 
 				for ( int i = 0; i < currentLocation.getInventory().Count; i++ )
 				{
-					Console.WriteLine(currentLocation.getInventory()[i].ToString());
+                    Console.WriteLine(currentLocation.getInventory()[i].itemName);
 				}
 			}
             Console.ResetColor();
@@ -112,18 +112,34 @@ namespace TextAdventure
                 In();
             if (command == "out")
                 Out();
+            if (command == "take item")
+                Inventory();
 		}
 
-        /*private void Inventory()
+        private void Inventory()
         {
-            string a;
-            do
-                Console.WriteLine("What do you want to take");
-            while (inventory == null)
+            string input = "";
+            string[] inputCheck = new string[] { };
+
+            if (currentLocation.getInventory().Count > 0)
+                Console.WriteLine("What do you want to take?");
+            else
+                Console.WriteLine("There are no items here");
+
+            for (int i = 0; i == currentLocation.getInventory().Count; i++)
             {
-                currentLocation.getInventory();
+                inputCheck[i] = currentLocation.getInventory()[i].itemName;
             }
-        } */
+
+            input = Console.ReadLine();
+
+            if (inputCheck.Contains(input))
+            {
+                
+            }
+            else
+                Console.WriteLine("That item doesn't exist");
+        } 
 
         private void showInventory()
 		{
