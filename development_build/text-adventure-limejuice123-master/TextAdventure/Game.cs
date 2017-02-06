@@ -113,10 +113,10 @@ namespace TextAdventure
             if (command == "out")
                 Out();
             if (command == "take item")
-                Inventory();
+                TakeItemInventory();
 		}
 
-        private void Inventory()
+        private void TakeItemInventory()
         {
             string input = "";
             string[] inputCheck = new string[] { };
@@ -135,7 +135,7 @@ namespace TextAdventure
 
             if (inputCheck.Contains(input))
             {
-                
+                currentLocation.takeItem(input);
             }
             else
                 Console.WriteLine("That item doesn't exist");
@@ -288,6 +288,7 @@ namespace TextAdventure
             Console.WriteLine("");
             Console.WriteLine("Type 'inventory' to look at your inventory");
             Console.WriteLine("Type 'examine' to observe the area for details");
+            Console.WriteLine("Type 'take item' to take an item from an area (item names are case sensitive");
             Console.WriteLine("Type 'use', then the name of the item to use it");
             Console.ResetColor();
         }
