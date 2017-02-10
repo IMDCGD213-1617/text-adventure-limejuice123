@@ -13,6 +13,7 @@ namespace TextAdventure
         private string roomDescription;
         private List<Exit> exits;
 		private List<Item> inventory;
+        private List<Usables> usables;
 
         public Location()
         {
@@ -21,6 +22,7 @@ namespace TextAdventure
 			roomDescription = "";
 			exits = new List<Exit>();
 			inventory = new List<Item>();
+            usables = new List<Usables>();
         }
 
 		public Location(string title)
@@ -29,6 +31,7 @@ namespace TextAdventure
 			roomDescription = "";
 			exits = new List<Exit>();
 			inventory = new List<Item>();
+            usables = new List<Usables>();
 		}
 
 		public Location(string title, string description)
@@ -37,7 +40,8 @@ namespace TextAdventure
 			roomDescription = description;
 			exits = new List<Exit>();
 			inventory = new List<Item>();
-		}
+            usables = new List<Usables>();
+        }
 
 		public override string ToString()
 		{
@@ -67,10 +71,20 @@ namespace TextAdventure
 			return new List<Item>(inventory);
 		}
 
+        public List<Usables> getUsables()
+        {
+            return new List<Usables>(usables);
+        }
+
 		public void addItem(Item itemToAdd)
 		{
 			inventory.Add(itemToAdd);
 		}
+
+        public void addUsables(Usables usableToAdd)
+        {
+            usables.Add(usableToAdd);
+        }
 
 		public void removeItem(Item itemToRemove)
 		{
@@ -94,11 +108,6 @@ namespace TextAdventure
 
 			return null;
 		} 
-
-        public void TakeItem()
-        {
-           
-        }
 
 		public string getTitle()
 		{

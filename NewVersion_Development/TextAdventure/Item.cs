@@ -18,6 +18,11 @@ namespace TextAdventure
         public Item (string name)
         {
             itemName = name;
-        }   
-	}
+        }
+
+        public override string ToString()
+        {
+            return itemName;
+        }
+    }
 }

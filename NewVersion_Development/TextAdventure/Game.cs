@@ -9,6 +9,7 @@ namespace TextAdventure
 	class Game
 	{
 		Location currentLocation;
+        Usables currentUsable;
         public Location lDoors, lPanel, lBack, lFloor, lCeiling, lRight, lShaft;
         public static string locationCurrent;
 
@@ -18,7 +19,9 @@ namespace TextAdventure
 
 		private List<Item> inventory;
 
-		public Game()
+        private bool haveCheckedFloor = false;
+
+        public Game()
 		{
 			inventory = new List<Item>();
 
@@ -30,12 +33,23 @@ namespace TextAdventure
 			lDoors = new Location("Facing Forward.", "You are facing the doors to the lift.");
 
 			lPanel = new Location("Facing Left.", "You are facing the lift panel.");
+            Usables alarm = new Usables("alarm");
+            Usables floor1 = new Usables("floor1");
+            Usables floor2 = new Usables("floor2");
+            Usables floor3 = new Usables("floor3");
+            Usables openDoors = new Usables("opendoors");
+            Usables closeDoors = new Usables("closedoors");
+            lPanel.addUsables(alarm);
+            lPanel.addUsables(floor1);
+            lPanel.addUsables(floor2);
+            lPanel.addUsables(floor3);
+            lPanel.addUsables(openDoors);
+            lPanel.addUsables(closeDoors);
 
-			lFloor = new Location("Facing Down.", "You are facing the floor. The unconscious body of a fellow traveller lies there, starved of oxygen.");
-            Item crowbar = new Item("Crowbar");
-            lFloor.addItem(crowbar);
+			lFloor = new Location("Facing Down.", "You are facing the floor. The unconscious body of a fellow traveller lies there, starved of oxygen. His pockets contain a key");
 
-            lBack = new Location("Facing the rear.", "You are facing the back of the lift. The panel is discoloured in some places.");
+            lBack = new Location("Facing the rear.", "You are facing the back of the lift. There is a hole in the panel.");
+            Usables maintenance = new Usables("maintenance");
 
             lRight = new Location("Facing right.", "You are facing the right of the lift.");
 
@@ -91,7 +105,19 @@ namespace TextAdventure
 				{
                     Console.WriteLine(currentLocation.getInventory()[i].itemName);
 				}
+
+                
 			}
+
+            if (currentLocation.getUsables().Count > 0)
+            {
+                Console.WriteLine("\nYou can interact with:\n");
+
+                for (int i = 0; i < currentLocation.getUsables().Count; i++)
+                {
+                    Console.WriteLine(currentLocation.getUsables()[i].usableName);
+                }
+            }
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -125,39 +151,52 @@ namespace TextAdventure
                 Down();
             if (command == "take item")
                 TakeItemInventory();
+            if (command == "use")
+                UseItem();
 		}
 
         private void TakeItemInventory()
         {
             string input = "";
-            string[] inputCheck = new string[] { };
 
             if (currentLocation.getInventory().Count > 0)
                 Console.WriteLine("What do you want to take?");
             else
                 Console.WriteLine("There are no items here");
 
-            for (int i = 0; i == currentLocation.getInventory().Count; i++)
-            {
-                inputCheck[i] = currentLocation.getInventory()[i].itemName;
-            }
-
             input = Console.ReadLine();
 
-            if (inputCheck.Contains(input))
+            Item selected = currentLocation.takeItem(input);
+            if (selected != null)
             {
-                currentLocation.takeItem(input);
+                inventory.Add(selected);
             }
             else
                 Console.WriteLine("That item doesn't exist");
         } 
+
+        private void UseItem()
+        {
+            string input = "";
+
+            Console.WriteLine("What would you like to use?");
+            input = Console.ReadLine();
+
+            foreach (Item item in inventory)
+            {
+                if (input == item.itemName)
+                {
+                    inventory.Remove(item);
+                }
+            }
+        }
 
         private void showInventory()
 		{
             Console.ForegroundColor = ConsoleColor.Yellow;
             if ( inventory.Count > 0 )
 			{
-				Console.WriteLine("\nA quick look in your bag reveals the following:\n");
+				Console.WriteLine("\nyou have the following on your person:\n");
 
 				foreach ( Item item in inventory )
 				{
@@ -329,14 +368,29 @@ namespace TextAdventure
             Console.ForegroundColor = ConsoleColor.DarkRed;
             switch (locationCurrent)
             {
-                case "l2":
-                    Console.WriteLine("This looks like a bug-out cabin of sorts. A place where someone might hide for a while");
+                case "lDoors":
+                    Console.WriteLine("The entire problem lays in front of you: the doors are tightly sealed.");
                     break;
-                case "l3":
-                    Console.WriteLine("The man's jacket appears to have some papers in the pockets");
+                case "lPanel":
+                    Console.WriteLine("The elevator panel contains the buttons for the floors, opening and closing the doors, and an alarm button.");
                     break;
-                case "l4":
-                    Console.WriteLine("The bars seem sturdy enough to support a human's weight.");
+                case "lBack":
+                    Console.WriteLine("On closer inspection, the hole seems deliberate; intended to house something.");
+                    break;
+                case "lCeiling":
+                    Console.WriteLine("The panel in the top is for maintenance, and leads to the shaft. It is sealed tightly");
+                    break;
+                case "lFloor":
+                    if (haveCheckedFloor == false)
+                    {
+                        haveCheckedFloor = true;
+                        Console.WriteLine("The name tag on the unconscious man says 'R.K.' His pocket contains a small key");
+                        Item maintenanceKey = new Item("key");
+                        lFloor.addItem(maintenanceKey);
+                        showLocation();
+                    }
+                    else
+                        Console.WriteLine("Nothing new here");
                     break;
                 default:
                     Console.WriteLine("There is nothing particularly of interest in this area");
