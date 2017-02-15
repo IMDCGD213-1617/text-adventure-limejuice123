@@ -178,20 +178,23 @@ namespace TextAdventure
         private void UseItem()
         {
             string input = "";
-            List<Item> itemList = new List<Item>();
 
             Console.WriteLine("What would you like to use?");
             input = Console.ReadLine();
 
-            foreach (Item item in inventory)
+            for(int i = 0; i < inventory.Count(); i++)
             {
-                if (input == item.itemName)
-                    itemList.Add(item);
-            }
-
-            foreach (Item item in itemList)
-            {
-                inventory.Remove(item);
+                if(input == inventory[i].itemName)
+                {
+                    if(inventory[i].itemName == "key" && locationCurrent == "lBack")
+                    {
+                        inventory.Remove(inventory[i]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nYou can't use that here!\n");
+                    }
+                }
             }
         }
 
