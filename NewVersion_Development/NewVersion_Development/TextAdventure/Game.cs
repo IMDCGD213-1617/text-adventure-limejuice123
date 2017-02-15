@@ -9,7 +9,6 @@ namespace TextAdventure
 	class Game
 	{
 		Location currentLocation;
-        Usables currentUsable;
         public Location lDoors, lPanel, lBack, lFloor, lCeiling, lRight, lShaft;
         public static string locationCurrent;
 
@@ -18,12 +17,15 @@ namespace TextAdventure
 		public bool isRunning = true;
 
 		private List<Item> inventory;
+        private List<Usables> usables;
 
         private bool haveCheckedFloor = false;
+        private bool haveUsedKey = false;
 
         public Game()
 		{
 			inventory = new List<Item>();
+            usables = new List<Usables>();
 
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("The lift has stopped. You are trapped.");
@@ -55,7 +57,7 @@ namespace TextAdventure
 
             lCeiling = new Location("Facing the ceiling", "You are facing upwards. You can see a small panel in the top of the lift.");
 
-            lShaft = new Location("In the maintenance shaft", "You have access to the lift cables from here");
+            //lShaft = new Location("In the maintenance shaft", "You have access to the lift cables from here");
 
 			lDoors.addExit(new Exit(Exit.Directions.Right, lRight));
             lDoors.addExit(new Exit(Exit.Directions.Left, lPanel));
@@ -80,9 +82,9 @@ namespace TextAdventure
             lFloor.addExit(new Exit(Exit.Directions.Up, lDoors));
 
             lCeiling.addExit(new Exit(Exit.Directions.Down, lDoors));
-            lCeiling.addExit(new Exit(Exit.Directions.Up, lShaft));
+           // lCeiling.addExit(new Exit(Exit.Directions.Up, lShaft));
 
-            lShaft.addExit(new Exit(Exit.Directions.Down, lCeiling));
+           // lShaft.addExit(new Exit(Exit.Directions.Down, lCeiling));
 
 			currentLocation = lDoors;
             locationCurrent = "lDoors";
@@ -182,6 +184,21 @@ namespace TextAdventure
             Console.WriteLine("What would you like to use?");
             input = Console.ReadLine();
 
+           /* for (int y = 0; y >= currentLocation.getUsables().Count; y++)
+            {
+                if (input == currentLocation.getUsables()[y].usableName)
+                {
+                    switch (usables[y].usableName)
+                    {
+                        case "alarm":
+                            break;
+                        default:
+                            Console.WriteLine("Nothing happens");
+                            break;
+                    }
+                }
+            } */
+
             for(int i = 0; i < inventory.Count(); i++)
             {
                 if(input == inventory[i].itemName)
@@ -189,6 +206,10 @@ namespace TextAdventure
                     if(inventory[i].itemName == "key" && locationCurrent == "lBack")
                     {
                         inventory.Remove(inventory[i]);
+                        lShaft = new Location("In the maintenance shaft", "You have access to the lift cables from here");
+                        lShaft.addExit(new Exit(Exit.Directions.Down, lCeiling));
+                        lCeiling.addExit(new Exit(Exit.Directions.Up, lShaft));
+                        haveUsedKey = true;
                     }
                     else
                     {
@@ -296,27 +317,46 @@ namespace TextAdventure
 
         public void Up()
         {
-            switch (locationCurrent)
+            if (haveUsedKey == true)
             {
-                default:
-                    currentLocation = lCeiling;
-                    locationCurrent = "lCeiling";
-                    showLocation();
-                    break;
-                case "lFloor":
-                    currentLocation = lDoors;
-                    locationCurrent = "lDoors";
-                    showLocation();
-                    break;
-                case "lShaft":
-                    Console.WriteLine("You can't go that way!");
-                    break;
-                case "lCeiling":
-                    currentLocation = lShaft;
-                    locationCurrent = "lShaft";
-                    showLocation();
-                    break;
+                switch (locationCurrent)
+                {
+                    default:
+                        currentLocation = lCeiling;
+                        locationCurrent = "lCeiling";
+                        showLocation();
+                        break;
+                    case "lFloor":
+                        currentLocation = lDoors;
+                        locationCurrent = "lDoors";
+                        showLocation();
+                        break;
+                    case "lShaft":
+                        Console.WriteLine("You can't go that way!");
+                        break;
+                    case "lCeiling":
+                        currentLocation = lShaft;
+                        locationCurrent = "lShaft";
+                        showLocation();
+                        break;
+                }
             }
+            else
+            {
+                switch (locationCurrent)
+                {
+                    default:
+                        currentLocation = lCeiling;
+                        locationCurrent = "lCeiling";
+                        showLocation();
+                        break;
+                    case "lFloor":
+                        currentLocation = lDoors;
+                        locationCurrent = "lDoors";
+                        showLocation();
+                        break;
+                }
+            }    
         }
 
         public void Down()
