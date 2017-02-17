@@ -86,6 +86,19 @@ namespace TextAdventure
             usables.Add(usableToAdd);
         }
 
+        public void removeItem(string itemToRemove)
+        {
+            foreach (Item _item in inventory)
+            {
+                if (_item.ToString() == itemToRemove)
+                {
+                    Item temp = _item;
+                    inventory.Remove(temp);
+                    return;
+                }
+            }
+        }
+
 		public void removeItem(Item itemToRemove)
 		{
 			if ( inventory.Contains(itemToRemove) )

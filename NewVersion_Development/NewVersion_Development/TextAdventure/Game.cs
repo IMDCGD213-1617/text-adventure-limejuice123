@@ -11,6 +11,7 @@ namespace TextAdventure
 		Location currentLocation;
         public Location lDoors, lPanel, lBack, lFloor, lCeiling, lRight, lShaft;
         public static string locationCurrent;
+        public static string currentFloor;
 
         //Exit.Directions direction;
 
@@ -21,6 +22,7 @@ namespace TextAdventure
 
         private bool haveCheckedFloor = false;
         private bool haveUsedKey = false;
+        private int onFloor3 = 0;
 
         public Game()
 		{
@@ -57,8 +59,6 @@ namespace TextAdventure
 
             lCeiling = new Location("Facing the ceiling", "You are facing upwards. You can see a small panel in the top of the lift.");
 
-            //lShaft = new Location("In the maintenance shaft", "You have access to the lift cables from here");
-
 			lDoors.addExit(new Exit(Exit.Directions.Right, lRight));
             lDoors.addExit(new Exit(Exit.Directions.Left, lPanel));
             lDoors.addExit(new Exit(Exit.Directions.Down, lFloor));
@@ -82,12 +82,12 @@ namespace TextAdventure
             lFloor.addExit(new Exit(Exit.Directions.Up, lDoors));
 
             lCeiling.addExit(new Exit(Exit.Directions.Down, lDoors));
-           // lCeiling.addExit(new Exit(Exit.Directions.Up, lShaft));
 
-           // lShaft.addExit(new Exit(Exit.Directions.Down, lCeiling));
+             
 
 			currentLocation = lDoors;
             locationCurrent = "lDoors";
+            currentFloor = "floor 1";
 			showLocation();
 		}
 
@@ -96,6 +96,10 @@ namespace TextAdventure
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n" + currentLocation.getTitle() + "\n");
 			Console.WriteLine(currentLocation.getDescription());
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("\nYou are on " + currentFloor);
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -179,25 +183,41 @@ namespace TextAdventure
 
         private void UseItem()
         {
+            Item crowbar = new Item("crowbar");
             string input = "";
 
             Console.WriteLine("What would you like to use?");
             input = Console.ReadLine();
 
-           /* for (int y = 0; y >= currentLocation.getUsables().Count; y++)
+            for (int y = 0; y < currentLocation.getUsables().Count; y++)
             {
                 if (input == currentLocation.getUsables()[y].usableName)
                 {
-                    switch (usables[y].usableName)
+                    switch (currentLocation.getUsables()[y].usableName)
                     {
-                        case "alarm":
+                        case "floor1":
+                            currentFloor = "floor 1";
+                            lShaft.removeItem("crowbar");
+                            showLocation();
+                            break;
+                        case "floor2":
+                            currentFloor = "floor 2";
+                            lShaft.removeItem("crowbar");
+                            showLocation();
+                            break;
+                        case "floor3":
+                            currentFloor = "floor 3";
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.WriteLine("\nThe lift attempts to reach floor 3, but seems to snag on something.");
+                            Console.ResetColor();
+                            lShaft.addItem(crowbar);                           
                             break;
                         default:
                             Console.WriteLine("Nothing happens");
                             break;
                     }
                 }
-            } */
+            } 
 
             for(int i = 0; i < inventory.Count(); i++)
             {
@@ -244,8 +264,10 @@ namespace TextAdventure
 		{
 			string currentCommand = Console.ReadLine().ToLower();
 
-			// instantly check for a quit
-			if (currentCommand == "quit" || currentCommand == "q")
+          
+
+            // instantly check for a quit
+            if (currentCommand == "quit" || currentCommand == "q")
 			{
 				isRunning = false;
 				return;
