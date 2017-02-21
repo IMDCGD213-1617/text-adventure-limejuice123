@@ -14,8 +14,6 @@ namespace TextAdventure
         public static string locationCurrent;
         public static string currentFloor;
 
-        //Exit.Directions direction;
-
 		public bool isRunning = true;
 
 		private List<Item> inventory;
@@ -452,7 +450,7 @@ namespace TextAdventure
             Console.WriteLine("Type 'inventory' to look at your inventory");
             Console.WriteLine("Type 'examine' to observe the area for details");
             Console.WriteLine("Type 'take item' to take an item from an area (item names are case sensitive");
-            Console.WriteLine("Type 'use', then the name of the item to use it");
+            Console.WriteLine("Type 'use', then the name of an item in your inventory or a usable object in the environment to use it");
             Console.ResetColor();
         }
     
