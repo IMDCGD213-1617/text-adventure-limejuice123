@@ -7,27 +7,35 @@ using System.Threading.Tasks;
 
 namespace TextAdventure
 {
-	class Game
+    //The main game class. Most of the main game functions happen within this class.
+    class Game
 	{
-		Location currentLocation;
+        //Variables that handle all things to do with locations, and where the player is.
+        Location currentLocation;
         public Location lDoors, lPanel, lBack, lFloor, lCeiling, lRight, lShaft;
         public static string locationCurrent;
         public static string currentFloor;
 
-		public bool isRunning = true;
+        //Check if the game is running.
+        public bool isRunning = true;
 
-		private List<Item> inventory;
+        //Lists containing the player inventories and usables in the map.
+        private List<Item> inventory;
         private List<Usables> usables;
 
+        //Variables that determine some story elements; gameplay changes when they change.
         private bool haveCheckedFloor = false;
         private bool haveUsedKey = false;
         private bool haveUsedCrowbar = false;
 
+        //Most of the instances of classes in the game are declared in this instance of the game class.
         public Game()
 		{
-			inventory = new List<Item>();
+            //Clear the inventories. Prevents leftovers from previous games.
+            inventory = new List<Item>();
             usables = new List<Usables>();
 
+            //Quick scene setter. Dark red is used to represent story elements.
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("The lift has stopped. You are trapped.");
             Console.ResetColor();
@@ -36,6 +44,7 @@ namespace TextAdventure
 			lDoors = new Location("Facing Forward.", "You are facing the doors to the lift.");
 
 			lPanel = new Location("Facing Left.", "You are facing the lift panel.");
+            //Adds instances of Usables for players to interact with later.
             Usables alarm = new Usables("alarm");
             Usables floor1 = new Usables("floor1");
             Usables floor2 = new Usables("floor2");
@@ -80,9 +89,10 @@ namespace TextAdventure
 
             lFloor.addExit(new Exit(Exit.Directions.Up, lDoors));
 
-            lCeiling.addExit(new Exit(Exit.Directions.Down, lDoors)); 
+            lCeiling.addExit(new Exit(Exit.Directions.Down, lDoors));
 
-			currentLocation = lDoors;
+            //Assign default values to the location variables.
+            currentLocation = lDoors;
             locationCurrent = "lDoors";
             currentFloor = "floor 1";
 			showLocation();
@@ -99,6 +109,7 @@ namespace TextAdventure
             Console.WriteLine("\nYou are on " + currentFloor);
             Console.ResetColor();
 
+            //List the items in the area that the player is in. Yellow indicates things to do with inventory.
             Console.ForegroundColor = ConsoleColor.Yellow;
             if (currentLocation.getInventory().Count > 0)
 			{
@@ -112,6 +123,7 @@ namespace TextAdventure
                 
 			}
 
+            //List the usables in the area. Usables also use yellow.
             if (currentLocation.getUsables().Count > 0)
             {
                 Console.WriteLine("\nYou can interact with:\n");
@@ -123,6 +135,7 @@ namespace TextAdventure
             }
             Console.ResetColor();
 
+            //List the exits in an area. Exits use Cyan.
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nAvailable Exits: \n");
 
@@ -158,6 +171,7 @@ namespace TextAdventure
                 UseItem();
 		}
 
+        //Takes an item. Assigns the player input to a temp variables and checks that against the location inventory. If a match is found, adds that item to inventory.
         private void TakeItemInventory()
         {
             string input = "";
@@ -176,8 +190,9 @@ namespace TextAdventure
             }
             else
                 Console.WriteLine("That item doesn't exist");
-        } 
+        }
 
+        //Handles using Items and Usables.
         private void UseItem()
         {
             Item crowbar = new Item("crowbar");
@@ -186,6 +201,7 @@ namespace TextAdventure
             Console.WriteLine("What would you like to use?");
             input = Console.ReadLine();
 
+            //Loop round the usables stored in the current scene.
             for (int y = 0; y < currentLocation.getUsables().Count; y++)
             {
                 if (input == currentLocation.getUsables()[y].usableName)
@@ -194,6 +210,7 @@ namespace TextAdventure
                     {
                         case "floor1":
                             currentFloor = "floor 1";
+                            //Removes crowbar from shaft when not on floor 3. Ensures no item duplication.
                             lShaft.removeItem("crowbar");
                             showLocation();
                             break;
@@ -207,6 +224,7 @@ namespace TextAdventure
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine("\nThe lift attempts to reach floor 3, but seems to snag on something.");
                             Console.ResetColor();
+                            //Add a crowbar to shaft when you're on floor 3.
                             lShaft.addItem(crowbar);                           
                             break;
                         case "opendoors":
@@ -217,15 +235,17 @@ namespace TextAdventure
                             break;
                     }
                 }
-            } 
+            }
 
-            for(int i = 0; i < inventory.Count(); i++)
+            //Does a similar thing for items.
+            for (int i = 0; i < inventory.Count(); i++)
             {
                 if(input == inventory[i].itemName)
                 {
                     if(inventory[i].itemName == "key" && locationCurrent == "lBack")
                     {
                         inventory.Remove(inventory[i]);
+                        //using the key in the back of the lift opens up the maintenance shaft.
                         lShaft = new Location("In the maintenance shaft", "You have access to the lift cables from here");
                         lShaft.addExit(new Exit(Exit.Directions.Down, lCeiling));
                         lCeiling.addExit(new Exit(Exit.Directions.Up, lShaft));
@@ -244,6 +264,7 @@ namespace TextAdventure
             }
         }
 
+        //function that runs the winning of the game.
         private void OpenDoors()
         {
             if (haveUsedCrowbar == true)
@@ -251,7 +272,9 @@ namespace TextAdventure
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("You emerge from the lift with a sense of victory. You have won");
+                //Thread.Sleep causes the system to wait for 5 seconds.
                 Thread.Sleep(5000);
+                //the game ends when isRunning = false;
                 isRunning = false;
                 return;
             }
@@ -264,13 +287,16 @@ namespace TextAdventure
         private void showInventory()
 		{
             Console.ForegroundColor = ConsoleColor.Yellow;
+            //if your inventory has things in it, display them. Else, say that the bag is empty.
             if ( inventory.Count > 0 )
 			{
 				Console.WriteLine("\nyou have the following on your person:\n");
 
-				foreach ( Item item in inventory )
+                //Checks each item in your inventory, then writes them to the console.
+                foreach ( Item item in inventory )
 				{
-					Console.WriteLine(item.ToString());
+                    //ToString() is an override which returns the item name rather than the class type.
+                    Console.WriteLine(item.ToString());
 				}
 			}
 			else
@@ -282,7 +308,8 @@ namespace TextAdventure
             Console.ResetColor();
 		}
 
-		public void Update()
+        //Update runs every frame.
+        public void Update()
 		{
 			string currentCommand = Console.ReadLine().ToLower();
 
@@ -299,6 +326,7 @@ namespace TextAdventure
 			doAction(currentCommand);
 		}
 
+        //Handles turning right. Uses the switch statement based on the static string locationCurrent to change your location.
         public void Right()
         {
             switch (locationCurrent)
@@ -329,6 +357,7 @@ namespace TextAdventure
             }
         }
 
+        //Handles turning left.
         public void Left()
         {
             switch (locationCurrent)
@@ -359,8 +388,10 @@ namespace TextAdventure
             }
         }
 
+        //Handles turning right
         public void Up()
         {
+            //Opens the maintenance shaft if the key is used.
             if (haveUsedKey == true)
             {
                 switch (locationCurrent)
@@ -385,6 +416,7 @@ namespace TextAdventure
                         break;
                 }
             }
+            //Else don't let the player go up there.
             else
             {
                 switch (locationCurrent)
@@ -403,6 +435,7 @@ namespace TextAdventure
             }    
         }
 
+        //Handles downward movement.
         public void Down()
         {
             switch (locationCurrent)
@@ -428,16 +461,19 @@ namespace TextAdventure
             }
         }
 
+        //The help functions tells people what they can do in any room.
         public void Help()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("");
             Console.WriteLine("In this location, you can move: ");
+            //Check for exits in the current location.
             foreach (Exit exit in currentLocation.getExits())
             {
                 Console.WriteLine(exit.getDirection());
             }
             Console.WriteLine("");
+            //Check for items in the location inventories.
             if (currentLocation.getInventory().Count > 0)
             {
                 Console.WriteLine("\nThis location contains the following:\n");
@@ -446,6 +482,7 @@ namespace TextAdventure
                     Console.WriteLine(currentLocation.getInventory()[i].ToString());
                 }
             }
+            //Give the player potential options.
             Console.WriteLine("");
             Console.WriteLine("Type 'inventory' to look at your inventory");
             Console.WriteLine("Type 'examine' to observe the area for details");
@@ -453,7 +490,8 @@ namespace TextAdventure
             Console.WriteLine("Type 'use', then the name of an item in your inventory or a usable object in the environment to use it");
             Console.ResetColor();
         }
-    
+
+        //Gives the player more info about a location.
         public void Examine()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -474,6 +512,7 @@ namespace TextAdventure
                 case "lFloor":
                     if (haveCheckedFloor == false)
                     {
+                        //Reveals to the player a key on the ground. They can't pick it up if they haven't examined the floor.
                         haveCheckedFloor = true;
                         Console.WriteLine("The name tag on the unconscious man says 'R.K.' His pocket contains a small key");
                         Item maintenanceKey = new Item("key");

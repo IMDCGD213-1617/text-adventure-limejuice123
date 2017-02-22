@@ -8,6 +8,7 @@ namespace TextAdventure
 {
     class Usables
     {
+        //This class is the same as the Item class.
         public string usableName;
 
         public Usables (string name)

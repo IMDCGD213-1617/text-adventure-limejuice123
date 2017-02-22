@@ -75,3 +75,10 @@ C:\Users\Games\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventu
 C:\Users\Games\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\bin\Debug\TextAdventure.exe
 C:\Users\Games\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\bin\Debug\TextAdventure.pdb
 C:\Users\Games\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\obj\Debug\TextAdventure.csprojResolveAssemblyReference.cache
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\bin\Debug\TextAdventure.exe.config
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\bin\Debug\TextAdventure.XML
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\obj\Debug\TextAdventure.exe
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\obj\Debug\TextAdventure.pdb
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\bin\Debug\TextAdventure.exe
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\bin\Debug\TextAdventure.pdb
+C:\Users\eternallyrekt\Desktop\text-adventure-limejuice123-master\SUBMISSION\TextAdventure\obj\Debug\TextAdventure.csprojResolveAssemblyReference.cache
